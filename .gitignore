@@ -1,0 +1,5 @@
+docker-compose.yml_*
+docker-compose.yml-*
+docker-compose.yml_back*
+
+posthog/
