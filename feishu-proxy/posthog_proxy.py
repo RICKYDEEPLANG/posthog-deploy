@@ -527,7 +527,7 @@ def feishu_redirect():
             session_id,
             path="/",
             httponly=True,
-            secure=True,  # HTTPS
+            secure=False,  # Nginx 到后端是 HTTP
             samesite="Lax",
             max_age=60 * 60 * 24 * 7  # 7天
         )
