@@ -229,6 +229,17 @@ services:
         depends_on:
             - web
             - livestream
+
+    feishu-proxy:
+        build: ./feishu-proxy
+        ports:
+            - '8910:8910'
+        volumes:
+            - feishu-proxy-data:/app
+        depends_on:
+            - web
+        restart: unless-stopped
+
     objectstorage:
         extends:
             file: docker-compose.base.yml
@@ -603,3 +614,4 @@ volumes:
     redis7-data:
     kafka-data:
     redpanda-data:
+    feishu-proxy-data:
