@@ -624,6 +624,7 @@ def catch_all(path):
             f"?app_id={PosthogConfig.FEISHU_CLIENT_ID}"
             f"&redirect_uri={PosthogConfig.FEISHU_REDIRECT_URI}"
             f"&state=posthog_auth"
+            f"&scope=auth:user.id:read%20contact:user.email:readonly"
         )
 
         return redirect(feishu_auth_url)
