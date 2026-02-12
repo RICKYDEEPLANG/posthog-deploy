@@ -447,7 +447,8 @@ def proxy_to_posthog(path):
         print(f"[proxy] 请求超时: {posthog_url}")
         return Response("Gateway Timeout", status=504)
     except Exception as e:
-        print(f"[proxy] {str(e)}")
+        print(f"[proxy错误] {str(e)}")
+        print(f"[proxy错误] 完整堆栈:\n{traceback.format_exc()}")
         return Response(f"Proxy Error: {str(e)}", status=502)
 
 
