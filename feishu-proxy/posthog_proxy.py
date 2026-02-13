@@ -6,7 +6,7 @@ import requests
 from flask import Flask, request, jsonify, redirect, make_response, Response
 from config import PosthogConfig
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)
 
 
 def load_password_store():
