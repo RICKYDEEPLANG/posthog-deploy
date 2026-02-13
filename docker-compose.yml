@@ -79,7 +79,7 @@ services:
             file: docker-compose.base.yml
             service: worker
         volumes:
-            - ./posthog:/code
+            - ./posthog/posthog:/code/posthog
         environment:
             SITE_URL: https://$DOMAIN
             SECRET_KEY: $POSTHOG_SECRET
@@ -169,7 +169,7 @@ services:
             file: docker-compose.base.yml
             service: plugins
         volumes:
-            - ./posthog:/code
+            - ./posthog/posthog:/code/posthog
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         pull_policy: if_not_present
         environment:
@@ -328,7 +328,7 @@ services:
             service: temporal-django-worker
         volumes:
             - ./compose:/compose
-            - ./posthog:/code
+            - ./posthog/posthog:/code/posthog
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         environment:
             SITE_URL: https://$DOMAIN
@@ -370,7 +370,7 @@ services:
             service: temporal-django-worker
         volumes:
             - ./compose:/compose
-            - ./posthog:/code
+            - ./posthog/posthog:/code/posthog
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         environment:
             SITE_URL: https://$DOMAIN
@@ -418,7 +418,7 @@ services:
             service: temporal-django-worker
         volumes:
             - ./compose:/compose
-            - ./posthog:/code
+            - ./posthog/posthog:/code/posthog
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         environment:
             SITE_URL: https://$DOMAIN
