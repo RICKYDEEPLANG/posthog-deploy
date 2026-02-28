@@ -123,7 +123,6 @@ services:
         command: /compose/start
         volumes:
             - ./compose:/compose
-            - ./posthog/posthog:/code/posthog
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         environment:
             SITE_URL: https://$DOMAIN
