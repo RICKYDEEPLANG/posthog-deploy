@@ -275,10 +275,16 @@ def create_or_login_posthog_user(email, name):
 
             # 获取用户 ID（需要从 user_obj 中获取）
             # 先通过 API 获取完整的用户信息
+            print(f"[PostHog] 准备获取组织信息，cookies 类型: {type(admin_auth['cookies'])}")
+            print(f"[PostHog] cookies 内容: {dict(admin_auth['cookies'])}")
+
             r = requests.get(
                 f"{PosthogConfig.POSTHOG_URL}/api/users/@me/",
                 cookies=admin_auth["cookies"]
             )
+
+            print(f"[PostHog] 获取组织信息响应状态: {r.status_code}")
+            print(f"[PostHog] 获取组织信息响应内容: {r.text}")
 
             if r.status_code == 200:
                 org_data = r.json()
