@@ -167,9 +167,7 @@ services:
         extends:
             file: docker-compose.base.yml
             service: plugins
-        volumes:
-            - ./posthog/posthog:/code/posthog
-        image: $REGISTRY_URL:$POSTHOG_APP_TAG
+        image: uhub.service.ucloud.cn/deeplang/posthog/posthog:latest
         pull_policy: if_not_present
         environment:
             SITE_URL: https://$DOMAIN
