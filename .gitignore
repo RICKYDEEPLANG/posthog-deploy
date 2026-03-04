@@ -2,4 +2,8 @@ docker-compose.yml_*
 docker-compose.yml-*
 docker-compose.yml_back*
 
+# PostHog 源码（单独的 git 仓库）
 posthog/
+
+# 敏感配置
+.env
