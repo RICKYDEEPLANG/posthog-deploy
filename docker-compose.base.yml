@@ -234,6 +234,8 @@ services:
     worker: &worker
         command: ./bin/docker-worker-celery --with-scheduler
         restart: on-failure
+        deploy:
+            replicas: 1
         environment: &worker_env
             OTEL_SDK_DISABLED: 'true'
             DISABLE_SECURE_SSL_REDIRECT: 'true'
@@ -256,6 +258,11 @@ services:
             DEPLOYMENT: hobby
             CDP_API_URL: 'http://plugins:6738'
             FLAGS_REDIS_ENABLED: false
+            # Celery worker 优化配置
+            WEB_CONCURRENCY: 8
+            CELERY_MAX_TASKS_PER_CHILD: 1000
+            CELERY_MAX_MEMORY_PER_CHILD: 2000000
+            CELERY_WORKER_PREFETCH_MULTIPLIER: 1
 
     web:
         <<: *worker
@@ -380,6 +387,8 @@ services:
     plugins:
         command: ./bin/posthog-node --no-restart-loop
         restart: on-failure
+        deploy:
+            replicas: 3
         environment:
             DATABASE_URL: 'postgres://posthog:posthog@db:5432/posthog'
             PERSONS_DATABASE_URL: 'postgres://posthog:posthog@db:5432/posthog'
