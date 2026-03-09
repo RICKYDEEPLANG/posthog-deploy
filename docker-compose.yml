@@ -140,8 +140,9 @@ services:
             OTEL_EXPORTER_OTLP_ENDPOINT: ''
             OTEL_SDK_DISABLED: 'true'
             USE_GRANIAN: 'true'
-            GRANIAN_WORKERS: '2'
+            GRANIAN_WORKERS: '4'
             OPT_OUT_CAPTURE: ${OPT_OUT_CAPTURE:-false}
+            CLOUD_DEPLOYMENT: 'false'
             TEMPORAL_HOST: temporal
             TEMPORAL_PORT: 7233
             TEMPORAL_NAMESPACE: default
