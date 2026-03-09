@@ -229,6 +229,8 @@ services:
 
     feishu-proxy:
         build: ./feishu-proxy
+        profiles:
+            - feishu
         ports:
             - '8910:8910'
         volumes:
