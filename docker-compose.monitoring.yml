@@ -34,8 +34,8 @@ services:
     image: uhub.service.ucloud.cn/deeplang/gcr.io/cadvisor/cadvisor:latest
     container_name: posthog-cadvisor
     restart: unless-stopped
-    ports:
-      - "8082:8080"
+    command:
+      - '--port=8082'
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
