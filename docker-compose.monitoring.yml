@@ -51,6 +51,34 @@ services:
       - '--kafka.server=localhost:9092'
     network_mode: host
 
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: posthog-node-exporter
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    network_mode: host
+
+  clickhouse-exporter:
+    image: clickhouse/clickhouse-exporter:latest
+    container_name: posthog-clickhouse-exporter
+    restart: unless-stopped
+    ports:
+      - "9116:9116"
+    environment:
+      - CLICKHOUSE_HOST=localhost
+      - CLICKHOUSE_PORT=9000
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=
+    network_mode: host
+
 volumes:
   prometheus-data:
   grafana-data:

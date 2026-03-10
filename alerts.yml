@@ -1,0 +1,58 @@
+groups:
+  - name: posthog_critical
+    interval: 30s
+    rules:
+      # Kafka 积压严重
+      - alert: KafkaLagCritical
+        expr: kafka_consumergroup_lag > 50000
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Kafka 积压严重: {{ $labels.consumergroup }}"
+          description: "积压量: {{ $value }} 条"
+
+      # ClickHouse 宕机
+      - alert: ClickHouseDown
+        expr: clickhouse_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "ClickHouse 宕机"
+
+      # Worker 宕机
+      - alert: WorkerDown
+        expr: count(container_last_seen{name=~".*posthog-worker.*"}) < 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Worker 容器宕机"
+
+      # Plugins 实例不足
+      - alert: PluginsLow
+        expr: count(container_last_seen{name=~".*posthog-plugins.*"}) < 3
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Plugins 实例数不足 3 个"
+
+      # 磁盘空间不足
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "磁盘空间不足 10%"
+
+      # 内存使用过高
+      - alert: MemoryHigh
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.9
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "内存使用超过 90%"

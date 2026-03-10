@@ -1,0 +1,61 @@
+{
+  "dashboard": {
+    "title": "PostHog 监控",
+    "panels": [
+      {
+        "title": "Kafka 消费积压",
+        "targets": [
+          {
+            "expr": "sum(kafka_consumergroup_lag) by (consumergroup)"
+          }
+        ],
+        "type": "graph"
+      },
+      {
+        "title": "ClickHouse 状态",
+        "targets": [
+          {
+            "expr": "clickhouse_up"
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "title": "Worker 内存使用",
+        "targets": [
+          {
+            "expr": "container_memory_usage_bytes{name=~\".*posthog-worker.*\"} / 1024 / 1024 / 1024"
+          }
+        ],
+        "type": "graph"
+      },
+      {
+        "title": "Plugins 实例数",
+        "targets": [
+          {
+            "expr": "count(container_last_seen{name=~\".*posthog-plugins.*\"})"
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "title": "系统 CPU 使用率",
+        "targets": [
+          {
+            "expr": "100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)"
+          }
+        ],
+        "type": "gauge"
+      },
+      {
+        "title": "系统内存使用率",
+        "targets": [
+          {
+            "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100"
+          }
+        ],
+        "type": "gauge"
+      }
+    ]
+  }
+}
