@@ -39,9 +39,11 @@ services:
       - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
     privileged: true
-    networks:
-      - posthog_default
+    devices:
+      - /dev/kmsg
+    network_mode: host
 
   kafka-exporter:
     image: uhub.service.ucloud.cn/deeplang/danielqsj/kafka-exporter:latest

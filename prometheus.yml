@@ -11,7 +11,7 @@ scrape_configs:
 
   - job_name: 'containers'
     static_configs:
-      - targets: ['posthog-cadvisor:8080']
+      - targets: ['localhost:8082']
 
   - job_name: 'kafka'
     static_configs:
