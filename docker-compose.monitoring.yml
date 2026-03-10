@@ -31,7 +31,7 @@ services:
       - posthog_default
 
   cadvisor:
-    image: uhub.service.ucloud.cn/deeplang/google/cadvisor:latest
+    image: uhub.service.ucloud.cn/deeplang/gcr.io/cadvisor/cadvisor:latest
     container_name: posthog-cadvisor
     restart: unless-stopped
     ports:
