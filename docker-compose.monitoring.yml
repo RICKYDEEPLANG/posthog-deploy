@@ -26,7 +26,7 @@ services:
     network_mode: host
 
   cadvisor:
-    image: google/cadvisor:v0.47.0
+    image: uhub.service.ucloud.cn/deeplang/google/cadvisor:latest
     container_name: posthog-cadvisor
     restart: unless-stopped
     ports:
