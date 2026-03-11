@@ -102,6 +102,14 @@ services:
             CLICKHOUSE_PASSWORD: ""
             CLICKHOUSE_SECURE: "false"
             CLICKHOUSE_VERIFY: "false"
+            EMAIL_HOST: ${EMAIL_HOST}
+            EMAIL_PORT: ${EMAIL_PORT}
+            EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+            EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+            EMAIL_USE_SSL: ${EMAIL_USE_SSL}
+            EMAIL_USE_TLS: ${EMAIL_USE_TLS}
+            DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
+            EMAIL_ENABLED: ${EMAIL_ENABLED}
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         depends_on:
             db:
@@ -154,7 +162,15 @@ services:
             CLICKHOUSE_SECURE: "false"
             CLICKHOUSE_VERIFY: "false"
             OPENAI_API_KEY: ${OPENAI_API_KEY}
-            OPENAI_BASE_URL: https://new-api.lingowhale.com/v1  
+            OPENAI_BASE_URL: https://new-api.lingowhale.com/v1
+            EMAIL_HOST: ${EMAIL_HOST}
+            EMAIL_PORT: ${EMAIL_PORT}
+            EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+            EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+            EMAIL_USE_SSL: ${EMAIL_USE_SSL}
+            EMAIL_USE_TLS: ${EMAIL_USE_TLS}
+            DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
+            EMAIL_ENABLED: ${EMAIL_ENABLED}
         depends_on:
             - db
             - redis
