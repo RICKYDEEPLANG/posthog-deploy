@@ -26,7 +26,7 @@ groups:
 
       # Web 服务宕机
       - alert: WebServiceDown
-        expr: count(container_last_seen{name=~".*posthog-web.*"}) < 1
+        expr: count(container_cpu_usage_seconds_total{name=~"posthog-web-.*"}) < 1
         for: 2m
         labels:
           severity: critical
@@ -36,7 +36,7 @@ groups:
 
       # Worker 宕机
       - alert: WorkerDown
-        expr: count(container_last_seen{name=~".*posthog-worker.*"}) < 1
+        expr: count(container_cpu_usage_seconds_total{name=~"posthog-worker-.*"}) < 1
         for: 2m
         labels:
           severity: critical
@@ -68,7 +68,7 @@ groups:
 
       # Plugins 实例不足
       - alert: PluginsLow
-        expr: count(container_last_seen{name=~".*posthog-plugins.*"}) < 3
+        expr: count(container_cpu_usage_seconds_total{name=~"posthog-plugins-.*"}) < 3
         for: 2m
         labels:
           severity: warning
@@ -80,7 +80,7 @@ groups:
 
       # 容器 CPU 过高
       - alert: ContainerCPUHigh
-        expr: rate(container_cpu_usage_seconds_total{name=~".*posthog.*"}[5m]) * 100 > 90
+        expr: rate(container_cpu_usage_seconds_total{name=~"posthog-.*"}[5m]) * 100 > 90
         for: 5m
         labels:
           severity: warning
