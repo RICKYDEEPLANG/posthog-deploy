@@ -2,15 +2,7 @@ groups:
   - name: posthog_critical
     interval: 30s
     rules:
-      # Kafka 积压严重
-      - alert: KafkaLagCritical
-        expr: kafka_consumergroup_lag > 50000
-        for: 5m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Kafka 积压严重: {{ $labels.consumergroup }}"
-          description: "积压量: {{ $value }} 条"
+      # ========== 核心服务宕机告警 ==========
 
       # ClickHouse 宕机
       - alert: ClickHouseDown
@@ -19,7 +11,28 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "ClickHouse 宕机"
+          summary: "ClickHouse 数据库宕机"
+          description: "ClickHouse 无法连接，数据查询和写入将失败"
+
+      # Kafka 宕机
+      - alert: KafkaDown
+        expr: up{job="kafka"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Kafka 消息队列宕机"
+          description: "Kafka 无法连接，事件数据无法写入"
+
+      # Web 服务宕机
+      - alert: WebServiceDown
+        expr: count(container_last_seen{name=~".*posthog-web.*"}) < 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Web 服务宕机"
+          description: "用户无法访问 PostHog"
 
       # Worker 宕机
       - alert: WorkerDown
@@ -28,7 +41,30 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Worker 容器宕机"
+          summary: "Worker 服务宕机"
+          description: "异步任务无法执行（邮件、导出等）"
+
+      # ========== 数据处理告警 ==========
+
+      # Kafka 积压预警
+      - alert: KafkaLagWarning
+        expr: kafka_consumergroup_lag > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Kafka 开始积压: {{ $labels.consumergroup }}"
+          description: "积压量: {{ $value }} 条，需要关注"
+
+      # Kafka 积压严重
+      - alert: KafkaLagCritical
+        expr: kafka_consumergroup_lag > 10000
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Kafka 积压严重: {{ $labels.consumergroup }}"
+          description: "积压量: {{ $value }} 条，数据处理严重滞后"
 
       # Plugins 实例不足
       - alert: PluginsLow
@@ -38,15 +74,41 @@ groups:
           severity: warning
         annotations:
           summary: "Plugins 实例数不足 3 个"
+          description: "当前实例数: {{ $value }}，可能影响事件处理速度"
 
-      # 磁盘空间不足
-      - alert: DiskSpaceLow
-        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.1
+      # ========== 容器资源告警 ==========
+
+      # 容器 CPU 过高
+      - alert: ContainerCPUHigh
+        expr: rate(container_cpu_usage_seconds_total{name=~".*posthog.*"}[5m]) * 100 > 90
         for: 5m
         labels:
           severity: warning
         annotations:
-          summary: "磁盘空间不足 10%"
+          summary: "容器 CPU 使用过高: {{ $labels.name }}"
+          description: "CPU 使用率: {{ $value | humanize }}%，持续 5 分钟"
+
+      # ========== 系统资源告警 ==========
+
+      # 磁盘空间预警
+      - alert: DiskSpaceWarning
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "磁盘空间不足 20%"
+          description: "剩余空间: {{ $value | humanizePercentage }}，建议清理或扩容"
+
+      # 磁盘空间严重不足
+      - alert: DiskSpaceCritical
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "磁盘空间严重不足"
+          description: "剩余空间: {{ $value | humanizePercentage }}，请立即处理"
 
       # 内存使用过高
       - alert: MemoryHigh
@@ -56,3 +118,4 @@ groups:
           severity: warning
         annotations:
           summary: "内存使用超过 90%"
+          description: "可用内存不足，可能影响服务性能"
