@@ -24,3 +24,7 @@ scrape_configs:
   - job_name: 'clickhouse'
     static_configs:
       - targets: ['posthog-clickhouse-exporter:9116']
+
+  - job_name: 'caddy'
+    static_configs:
+      - targets: ['proxy:2019']

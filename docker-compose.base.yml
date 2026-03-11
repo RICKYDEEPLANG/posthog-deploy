@@ -10,12 +10,17 @@ services:
         command: -c 'set -x && echo "$$CADDYFILE" > /etc/caddy/Caddyfile && echo "$$CADDY_EXTRA_CONFIG" >> /etc/caddy/Caddyfile && exec caddy run -c /etc/caddy/Caddyfile'
         volumes:
             - /root/.caddy
+        ports:
+            - "2019:2019"
         environment:
             CADDY_TLS_BLOCK: ''
             CADDY_HOST: 'http://localhost:8000'
             CADDY_EXTRA_CONFIG: ''
             CADDYFILE: |
                 {
+                    servers {
+                        metrics
+                    }
                 ${CADDY_TLS_BLOCK:-}
                 }
                 ${CADDY_HOST:-http://localhost:8000} {
@@ -276,6 +281,8 @@ services:
             args:
                 BIN: capture
         restart: on-failure
+        deploy:
+            replicas: 2
         environment:
             ADDRESS: '0.0.0.0:3000'
             KAFKA_TOPIC: 'events_plugin_ingestion'
