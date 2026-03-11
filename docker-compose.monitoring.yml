@@ -84,9 +84,32 @@ services:
     networks:
       - posthog_default
 
+  alertmanager:
+    image: uhub.service.ucloud.cn/deeplang/prom/alertmanager:latest
+    container_name: posthog-alertmanager
+    restart: unless-stopped
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - alertmanager-data:/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    networks:
+      - posthog_default
+
+  feishu-alert-adapter:
+    build: ./feishu-alert-adapter
+    container_name: posthog-feishu-adapter
+    restart: unless-stopped
+    networks:
+      - posthog_default
+
 volumes:
   prometheus-data:
   grafana-data:
+  alertmanager-data:
 
 networks:
   posthog_default:
