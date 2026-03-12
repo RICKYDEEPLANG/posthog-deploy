@@ -25,6 +25,8 @@ services:
       - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
+      - GF_DEFAULT_LANGUAGE=zh-Hans
     volumes:
       - grafana-data:/var/lib/grafana
     networks:
@@ -85,7 +87,7 @@ services:
       - posthog_default
 
   alertmanager:
-    image: uhub.service.ucloud.cn/deeplang/prom/alertmanager:latest
+    image: prom/alertmanager:latest
     container_name: posthog-alertmanager
     restart: unless-stopped
     ports:
