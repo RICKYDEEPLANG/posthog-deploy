@@ -1,0 +1,21 @@
+services:
+  feishu-quick-login:
+    build: ./feishu-quick-login
+    container_name: posthog-feishu-quick-login
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - FEISHU_APP_ID=cli_a90736d6c9389cb1
+      - FEISHU_APP_SECRET=VnWSzOIi8SfGXdTCUeROGeJu5iGhjBDB
+      - POSTHOG_URL=http://posthog-web:8000
+      - POSTHOG_EXTERNAL_URL=https://posthog.deeplang.tech
+      - REDIRECT_URI=https://posthog.deeplang.tech/feishu-login/callback
+    volumes:
+      - ./feishu-quick-login/users.json:/app/users.json:ro
+    networks:
+      - posthog_default
+
+networks:
+  posthog_default:
+    external: true

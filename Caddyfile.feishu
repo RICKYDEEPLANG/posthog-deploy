@@ -1,0 +1,19 @@
+# Caddy 配置文件
+# 用于反向代理和路由飞书登录服务
+
+posthog.deeplang.tech {
+    # 飞书快捷登录路径
+    handle /feishu-login* {
+        reverse_proxy posthog-feishu-quick-login:5000
+    }
+
+    # PostHog 主服务（所有其他请求）
+    handle {
+        reverse_proxy posthog-web:8000
+    }
+
+    # 日志
+    log {
+        output file /var/log/caddy/access.log
+    }
+}
