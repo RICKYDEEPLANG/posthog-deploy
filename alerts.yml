@@ -48,7 +48,7 @@ groups:
 
       # Kafka 积压预警
       - alert: KafkaLagWarning
-        expr: kafka_consumergroup_lag > 1000
+        expr: kafka_consumergroup_lag{consumergroup!="clickhouse_log_entries"} > 1000
         for: 5m
         labels:
           severity: warning
@@ -56,15 +56,35 @@ groups:
           summary: "Kafka 开始积压: {{ $labels.consumergroup }}"
           description: "积压量: {{ $value }} 条，需要关注"
 
+      # ClickHouse 日志队列积压（阈值更高）
+      - alert: ClickHouseLogLagWarning
+        expr: kafka_consumergroup_lag{consumergroup="clickhouse_log_entries"} > 20000
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "ClickHouse 日志队列积压"
+          description: "积压量: {{ $value }} 条，日志处理较慢"
+
       # Kafka 积压严重
       - alert: KafkaLagCritical
-        expr: kafka_consumergroup_lag > 10000
+        expr: kafka_consumergroup_lag{consumergroup!="clickhouse_log_entries"} > 10000
         for: 5m
         labels:
           severity: critical
         annotations:
           summary: "Kafka 积压严重: {{ $labels.consumergroup }}"
           description: "积压量: {{ $value }} 条，数据处理严重滞后"
+
+      # ClickHouse 日志队列严重积压
+      - alert: ClickHouseLogLagCritical
+        expr: kafka_consumergroup_lag{consumergroup="clickhouse_log_entries"} > 50000
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "ClickHouse 日志队列严重积压"
+          description: "积压量: {{ $value }} 条，需要检查日志处理服务"
 
       # Plugins 实例不足
       - alert: PluginsLow
