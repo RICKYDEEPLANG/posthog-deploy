@@ -48,8 +48,8 @@ groups:
 
       # Kafka 积压预警
       - alert: KafkaLagWarning
-        expr: kafka_consumergroup_lag{consumergroup!="clickhouse_log_entries"} > 1000
-        for: 5m
+        expr: kafka_consumergroup_lag{consumergroup!="clickhouse_log_entries"} > 8000
+        for: 10m
         labels:
           severity: warning
         annotations:
@@ -68,8 +68,8 @@ groups:
 
       # Kafka 积压严重
       - alert: KafkaLagCritical
-        expr: kafka_consumergroup_lag{consumergroup!="clickhouse_log_entries"} > 10000
-        for: 5m
+        expr: kafka_consumergroup_lag{consumergroup!="clickhouse_log_entries"} > 30000
+        for: 10m
         labels:
           severity: critical
         annotations:
