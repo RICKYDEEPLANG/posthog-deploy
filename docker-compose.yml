@@ -240,9 +240,14 @@ services:
         environment:
             CADDY_TLS_BLOCK: $TLS_BLOCK
             CADDY_HOST: '$DOMAIN, http://, https://'
+            CADDY_EXTRA_CONFIG: |
+                handle /feishu-login* {
+                    reverse_proxy feishu-quick-login:5000
+                }
         depends_on:
             - web
             - livestream
+            - feishu-quick-login
 
     feishu-proxy:
         build: ./feishu-proxy
@@ -255,6 +260,19 @@ services:
         depends_on:
             - web
         restart: unless-stopped
+
+    feishu-quick-login:
+        build: ./feishu-quick-login
+        container_name: posthog-feishu-quick-login
+        restart: unless-stopped
+        environment:
+            - FEISHU_APP_ID=${FEISHU_APP_ID}
+            - FEISHU_APP_SECRET=${FEISHU_APP_SECRET}
+            - POSTHOG_URL=http://web:8000
+            - POSTHOG_EXTERNAL_URL=https://${DOMAIN}
+            - REDIRECT_URI=https://${DOMAIN}/feishu-login/callback
+        volumes:
+            - ./feishu-quick-login/users.json:/app/users.json:ro
 
     objectstorage:
         extends:
