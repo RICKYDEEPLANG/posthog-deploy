@@ -333,6 +333,7 @@ services:
                     }
 
                     handle /feishu-login* {
+                        uri strip_prefix /feishu-login
                         reverse_proxy feishu-quick-login:5000
                     }
 
