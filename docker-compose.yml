@@ -132,6 +132,14 @@ services:
         volumes:
             - ./compose:/compose
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
+        deploy:
+            resources:
+                limits:
+                    memory: 80G
+                    cpus: '12'
+                reservations:
+                    memory: 8G
+                    cpus: '4'
         environment:
             SITE_URL: https://$DOMAIN
             LIVESTREAM_HOST: 'https://${DOMAIN}/livestream'
@@ -148,7 +156,7 @@ services:
             OTEL_EXPORTER_OTLP_ENDPOINT: ''
             OTEL_SDK_DISABLED: 'true'
             USE_GRANIAN: 'true'
-            GRANIAN_WORKERS: '4'
+            GRANIAN_WORKERS: '2'
             OPT_OUT_CAPTURE: ${OPT_OUT_CAPTURE:-false}
             CLOUD_DEPLOYMENT: 'false'
             TEMPORAL_HOST: temporal
