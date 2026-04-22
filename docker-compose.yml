@@ -131,6 +131,8 @@ services:
         command: /compose/start
         volumes:
             - ./compose:/compose
+            - ./posthog/posthog/api/user.py:/code/posthog/api/user.py
+            - ./posthog/posthog/api/authentication.py:/code/posthog/api/authentication.py
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         deploy:
             resources:
