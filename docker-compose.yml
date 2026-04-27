@@ -258,7 +258,7 @@ services:
                 ${CADDY_TLS_BLOCK:-}
                 }
                 ${CADDY_HOST:-http://localhost:8000} {
-                    encode gzip br
+                    encode gzip
 
                     @replay-capture {
                         path /s
