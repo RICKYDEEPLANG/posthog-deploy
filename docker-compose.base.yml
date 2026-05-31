@@ -596,7 +596,7 @@ services:
                 echo "SeaweedFS ready with posthog bucket"
                 wait $$WEED_PID
             - --
-        command: ['server', '-s3', '-s3.port=8333', '-dir=/data']
+        command: ['server', '-s3', '-s3.port=8333', '-dir=/data','-volume.max=15']
 
 networks:
     otel_network:

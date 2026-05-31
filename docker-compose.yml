@@ -80,7 +80,12 @@ services:
             service: worker
         volumes:
             - ./posthog:/code
+        deploy:
+            resources:
+                limits:
+                    memory: 100G
         environment:
+            WEB_CONCURRENCY: 4
             SITE_URL: https://$DOMAIN
             SECRET_KEY: $POSTHOG_SECRET
             OBJECT_STORAGE_ACCESS_KEY_ID: 'object_storage_root_user'
