@@ -78,8 +78,8 @@ services:
         extends:
             file: docker-compose.base.yml
             service: worker
-        volumes:
-            - ./posthog:/code
+        volumes: []
+            # - ./posthog:/code  # 注释：源码挂载可能与官方镜像版本不兼容
         deploy:
             resources:
                 limits:
@@ -136,8 +136,8 @@ services:
         command: /compose/start
         volumes:
             - ./compose:/compose
-            - ./posthog/posthog/api/user.py:/code/posthog/api/user.py
-            - ./posthog/posthog/api/authentication.py:/code/posthog/api/authentication.py
+            # - ./posthog/posthog/api/user.py:/code/posthog/api/user.py  # 注释：禁用密码修改功能（需适配新版本）
+            # - ./posthog/posthog/api/authentication.py:/code/posthog/api/authentication.py  # 注释：禁用密码重置功能（需适配新版本）
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         deploy:
             resources:
@@ -476,7 +476,7 @@ services:
             service: temporal-django-worker
         volumes:
             - ./compose:/compose
-            - ./posthog:/code
+            # - ./posthog:/code  # 注释：源码挂载可能与官方镜像版本不兼容
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         environment:
             SITE_URL: https://$DOMAIN
@@ -518,7 +518,7 @@ services:
             service: temporal-django-worker
         volumes:
             - ./compose:/compose
-            - ./posthog:/code
+            # - ./posthog:/code  # 注释：源码挂载可能与官方镜像版本不兼容
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         environment:
             SITE_URL: https://$DOMAIN
@@ -566,7 +566,7 @@ services:
             service: temporal-django-worker
         volumes:
             - ./compose:/compose
-            - ./posthog:/code
+            # - ./posthog:/code  # 注释：源码挂载可能与官方镜像版本不兼容
         image: $REGISTRY_URL:$POSTHOG_APP_TAG
         environment:
             SITE_URL: https://$DOMAIN
