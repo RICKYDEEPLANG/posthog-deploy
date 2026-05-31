@@ -668,7 +668,7 @@ services:
             - redis
 
     kafka-init:
-        image: uhub.service.ucloud.cn/deeplang/docker.redpanda.com/redpandadata/redpanda:v25.1.9
+        image: docker.redpanda.com/redpandadata/redpanda:v25.1.9
         entrypoint: /bin/sh
         command:
             - -c
