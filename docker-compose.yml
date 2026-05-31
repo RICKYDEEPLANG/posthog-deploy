@@ -655,8 +655,10 @@ services:
             service: livestream
         environment:
             - LIVESTREAM_JWT_SECRET=${POSTHOG_SECRET}
-        volumes:
-            - ./posthog/docker/livestream/configs-hobby.yml:/configs/configs.yml
+            - LIVESTREAM_KAFKA_BROKERS=kafka:9092
+            - LIVESTREAM_KAFKA_TOPIC=events_plugin_ingestion
+            - LIVESTREAM_MMDB_PATH=GeoLite2-City.mmdb
+            - LIVESTREAM_KAFKA_SECURITY_PROTOCOL=PLAINTEXT
 
     feature-flags:
         build:
