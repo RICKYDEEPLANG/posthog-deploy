@@ -44,13 +44,14 @@ services:
             - kafka
             - zookeeper
         volumes:
-            - ./posthog/posthog/idl:/idl
-            - ./posthog/docker/clickhouse/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-            - ./posthog/docker/clickhouse/config.xml:/etc/clickhouse-server/config.xml
-            - ./posthog/docker/clickhouse/config.d/default.xml:/etc/clickhouse-server/config.d/default.xml
-            - ./posthog/docker/clickhouse/users.xml:/etc/clickhouse-server/users.xml
-            - ./posthog/docker/clickhouse/user_defined_function.xml:/etc/clickhouse-server/user_defined_function.xml
-            - ./posthog/posthog/user_scripts:/var/lib/clickhouse/user_scripts
+            # 注释：使用官方镜像默认配置，避免与新版本不兼容
+            # - ./posthog/posthog/idl:/idl
+            # - ./posthog/docker/clickhouse/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+            # - ./posthog/docker/clickhouse/config.xml:/etc/clickhouse-server/config.xml
+            # - ./posthog/docker/clickhouse/config.d/default.xml:/etc/clickhouse-server/config.d/default.xml
+            # - ./posthog/docker/clickhouse/users.xml:/etc/clickhouse-server/users.xml
+            # - ./posthog/docker/clickhouse/user_defined_function.xml:/etc/clickhouse-server/user_defined_function.xml
+            # - ./posthog/posthog/user_scripts:/var/lib/clickhouse/user_scripts
             - clickhouse-data:/var/lib/clickhouse
 
     zookeeper:
