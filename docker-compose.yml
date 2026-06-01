@@ -165,7 +165,7 @@ services:
             USE_GRANIAN: 'true'
             GRANIAN_WORKERS: '4'
             OPT_OUT_CAPTURE: 'true'
-            CLOUD_DEPLOYMENT: 'false'
+            CLOUD_DEPLOYMENT: ''
             TEMPORAL_HOST: temporal
             TEMPORAL_PORT: 7233
             TEMPORAL_NAMESPACE: default
