@@ -200,6 +200,7 @@ services:
             file: docker-compose.base.yml
             service: plugins
         image: ghcr.io/posthog/posthog-node:${POSTHOG_NODE_TAG:-master}
+        command: ["node", "nodejs/dist/index.js"]
         pull_policy: if_not_present
         environment:
             SITE_URL: https://$DOMAIN
